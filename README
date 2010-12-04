@@ -1,0 +1,22 @@
+
+VCDOM [RubyGem project]
+
+----------------------------------------------------------------
+This project makes a implementation of W3C DOM working on Ruby.
+Now, it's under construction...
+
+=== Sample ===
+
+# ruby code
+
+require "vcdom/xml_parser"
+require "vcdom/xml_serializer"
+
+parser = VCDOM::XMLParser.new()
+input  = VCDOM::XMLInput.new()
+serializer = VCDOM::XMLSerializer.new()
+
+input.string_data = "<test>aaaa</test>"
+doc = parser.parse( input )
+serializer.write_to_string( doc ) 
+    #=> "<test>aaa</test>"
