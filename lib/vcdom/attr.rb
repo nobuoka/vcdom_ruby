@@ -8,7 +8,7 @@ module VCDOM
       
       include Parent
       
-      def initialize( doc, name )
+      def initialize( doc, name ) # :nodoc:
         initialize_parent()
         super( doc )
         @owner_element  = nil
@@ -22,7 +22,7 @@ module VCDOM
       def owner_element
         @owner_element
       end
-      def _set_owner_element( elem )
+      def _set_owner_element( elem ) # :nodoc:
         @owner_element = elem
       end
       

@@ -50,7 +50,13 @@ module VCDOM
         @cur = @cur.owner_element
       end
       def on_chardata( char_data )
-        @cur.append_child( @doc.create_text_node( char_data ) )
+        if @cur.node_type == Node::DOCUMENT_NODE then
+          if char_data !~ /\A[\x20\x09\x0D\x0A]*\Z/ then
+            raise "ERROR"
+          end
+        else
+          @cur.append_child( @doc.create_text_node( char_data ) )
+        end
       end
     end
     class XMLParser

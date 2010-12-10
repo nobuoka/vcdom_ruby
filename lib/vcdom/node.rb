@@ -21,7 +21,7 @@ module VCDOM
         private :new
       end
       
-      def initialize( owner_document )
+      def initialize( owner_document ) # :nodoc:
         @owner_document = owner_document
       end
       

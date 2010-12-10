@@ -13,8 +13,7 @@ module VCDOM
       
       include Parent
       
-      
-      def initialize()
+      def initialize() # :nodoc:
         initialize_parent()
         super( nil )
       end
@@ -23,29 +22,40 @@ module VCDOM
         DOCUMENT_NODE
       end
       
+      def document_element
+        @document_element
+      end
+      
       def append_child( new_child )
-        # ノードのタイプチェックなど
+        # Check the arg type
         if not new_child.is_a? Node then
           raise ArgumentError.new( "the argument [#{new_child.inspect}] is not an object of the expected class." )
         end
         # Element (maximum of one), ProcessingInstruction, Comment, DocumentType (maximum of one) 
         case new_child.node_type
           when ELEMENT_NODE then
-            # 既に追加されてるかどうかのチェック
+            # is there document_element already?
             if @document_element.nil? then
               @document_element = new_child
             else
               raise "HIERARCHY_REQUEST_ERR"
             end
           when DOCUMENT_TYPE_NODE then
-            # 既に追加されてるかどうかのチェック
+            # is there document_type already?
           when PROCESSING_INSTRUCTION_NODE, COMMENT_NODE then
             # OK
           else
             # ERROR
-            raise "ERROR"
+            raise "ERROR : new_child.node_type = #{new_child.node_type}"
         end
         _append_child( new_child )
+      end
+      def remove_child( old_child )
+        old_child = super( old_child )
+        if old_child.equal? @document_element then
+          @document_element = nil
+        end
+        return old_child
       end
       
       def create_element( tag_name )
@@ -113,13 +123,10 @@ module VCDOM
       end
       
       def create_text_node( data )
-        node = nil
-        if data.is_a? String then
-          node = Text._new( self, data.intern )
-        else
+        if not data.is_a? String then
           raise ArgumentError.new( "the argument [#{data.inspect}] is not an object of the expected class. the class : #{data.class}" )
         end
-        node
+        node = Text._new( self, data.intern )
       end
       
     end

@@ -34,8 +34,10 @@ Gem::Specification.new do |s|
     "lib/vcdom/parent.rb",
     "lib/vcdom/text.rb",
     "lib/vcdom/xml_parser.rb",
-    "lib/vcdom/xml_serializer.rb"
-    #"test/helper.rb",
+    "lib/vcdom/xml_serializer.rb",
+    #"test/main_test.rb",
+    #"test/main_test_1.8.rb",
+    #"test/main_test_1.9.rb",
     #"test/test_test.rb"
   ]
   #s.homepage = %q{http://github.com/nobuoka/test}
@@ -44,7 +46,9 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.5}
   s.summary = "This gem is a one of implementations of W3C DOM."
   s.test_files = [
-    #"test/helper.rb",
+    #"test/main_test.rb",
+    #"test/main_test_1.8.rb",
+    #"test/main_test_1.9.rb",
     #"test/test_test.rb"
   ]
 

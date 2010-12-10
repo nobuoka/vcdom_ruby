@@ -11,7 +11,7 @@ module VCDOM
       include Parent
       include Child
       
-      def initialize( doc, tag_name )
+      def initialize( doc, tag_name ) # :nodoc:
         initialize_parent()
         super( doc )
         @local_name = tag_name
@@ -326,6 +326,80 @@ module VCDOM
             c.normalize_namespaces()
           end
         end # end Element.normalizeNamespaces
+      end
+      
+      # The first child node of that element which is of nodeType +ELEMENT_NODE+, as an Element object.
+      # If the element on which this attribute is accessed does not have any child nodes, 
+      # or if none of those child nodes are element nodes, then this attribute return +nil+. 
+      # (defiend at W3C Element Traversal Specification)
+      def first_element_child
+        n = self.first_child
+        while n do
+          if n.node_type == ELEMENT_NODE then
+            break
+          end
+          n = n.next_sibling
+        end
+        return n
+      end
+      
+      # The last child node of that element which is of nodeType +ELEMENT_NODE+, as an Element object.
+      # If the element on which this attribute is accessed does not have any child nodes, 
+      # or if none of those child nodes are element nodes, then this attribute return +nil+. 
+      # (defiend at W3C Element Traversal Specification)
+      def last_element_child
+        n = self.last_child
+        while n do
+          if n.node_type == ELEMENT_NODE then
+            break
+          end
+          n = n.previous_sibling
+        end
+        return n
+      end
+      
+      # The sibling node of that element which most immediately precedes that element in document order, 
+      # and which is of nodeType +ELEMENT_NODE+, as an Element object. 
+      # If the element on which this attribute is accessed does not have any preceding sibling nodes, 
+      # or if none of those preceding sibling nodes are element nodes, then this attribute must return +nil+. 
+      # (defiend at W3C Element Traversal Specification)
+      def previous_element_sibling
+        n = self.previous_sibling
+        while n do
+          if n.node_type == ELEMENT_NODE then
+            break
+          end
+          n = n.previous_sibling
+        end
+        return n
+      end
+      
+      # The sibling node of that element which most immediately follows that element in document order, 
+      # and which is of nodeType +ELEMENT_NODE+, as an Element object. 
+      # If the element on which this attribute is accessed does not have any following sibling nodes, 
+      # or if none of those following sibling nodes are element nodes, then this attribute must return +nil+. 
+      # (defiend at W3C Element Traversal Specification)
+      def next_element_sibling
+        n = self.next_sibling
+        while n do
+          if n.node_type == ELEMENT_NODE then
+            break
+          end
+          n = n.next_sibling
+        end
+        return n
+      end
+      
+      # The current number of child nodes of that element which are of nodeType +ELEMENT_NODE+. 
+      # This value is not stored, but calculated when you access this attribute. 
+      def child_element_count
+        num = 0
+        self.each_child_node do |n|
+          if n.node_type == ELEMENT_NODE then
+            num += 1
+          end
+        end
+        return num
       end
       
     end
