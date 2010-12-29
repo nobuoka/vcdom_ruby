@@ -58,7 +58,29 @@ module VCDOM
         nil
       end
       
+      # Concatenation of the textContent attribute value of every child node, 
+      # excluding +COMMENT_NODE+ and +PROCESSING_INSTRUCTION_NODE+ nodes. 
+      # This is the empty string if the node has no children.
+      def text_content
+        str = String.new()
+        self.each_child_node do |n|
+          if n.node_type != COMMENT_NODE and n.node_type != PROCESSING_INSTRUCTION_NODE then
+            str << n.text_content
+          end
+        end
+        return str
+      end
       
+      # Any possible children this node have are removed and, if the new value is not empty +String+ object or +nil+, 
+      # replaced by a single Text node containing the new value string. 
+      def text_content=( val )
+        n = self.first_child
+        while n do
+          self.remove_child( n )
+          n = self.first_child
+        end
+        self.append_child( self.owner_document.create_text_node( val ) )
+      end
       
       def lookup_prefix( namespace_uri )
         if namespace_uri.nil? then #(namespaceURI has no value, i.e. namespaceURI is null or empty string) {
@@ -100,6 +122,12 @@ module VCDOM
             return nil
         end
       end
+      
+      # Always +false+.
+      def has_child_nodes()
+        return false
+      end
+      
       def lookup_namespace_prefix( namespace_uri, original_element )
         if not self.namespace_uri.nil? and self.namespace_uri == namespace_uri and 
               not self.prefix.nil? and original_element.lookup_namespace_uri( self.prefix ) == namespace_uri then

@@ -51,7 +51,7 @@ module VCDOM
       end
       
       def append_child( new_child )
-        # ノードのタイプチェックなど
+        # check the arg type
         if not new_child.is_a? Node then
           raise ArgumentError.new( "the argument [#{new_child.inspect}] is not an object of the expected class." )
         end

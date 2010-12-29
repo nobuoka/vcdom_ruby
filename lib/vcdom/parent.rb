@@ -70,6 +70,15 @@ module VCDOM
         @child_nodes.last_child
       end
       
+      # Returns whether this node has any children. 
+      def has_child_nodes()
+        if @child_nodes.first_child.nil? then
+          return false
+        else
+          return true
+        end
+      end
+      
       def _append_child( new_child )
         #@child_nodes << new_child
         if not new_child.parent_node.nil? then

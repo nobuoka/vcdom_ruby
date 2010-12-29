@@ -26,6 +26,15 @@ module VCDOM
         @document_element
       end
       
+      # always +nil+
+      def text_content
+        nil
+      end
+      
+      # no effect
+      def text_content=( val )
+      end
+      
       def append_child( new_child )
         # Check the arg type
         if not new_child.is_a? Node then

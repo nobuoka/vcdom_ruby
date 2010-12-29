@@ -7,13 +7,20 @@ module VCDOM
       
       def initialize( doc, data )
         super( doc )
-        @data = data
+        @data = data.intern
       end
       
       def data
         @data.to_s
       end
-      alias :node_value :data
+      def data=( val )
+        @data = val.intern
+      end
+      alias :node_value    :data
+      alias :node_value=   :data=
+      alias :text_content  :data
+      alias :text_content= :data=
+      
       def length
         @data.to_s.length
       end

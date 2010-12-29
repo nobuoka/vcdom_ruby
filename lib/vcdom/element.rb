@@ -84,6 +84,18 @@ module VCDOM
         self.set_attribute_node( attr )
         nil
       end
+      # Retrieves an attribute value by name.
+      def get_attribute( name )
+        @attr_nodes.each do |attr|
+          if attr.name == name then
+            #//////////////////////////
+            # 変更する
+            #//////////////////////////
+            return attr.value
+          end
+        end
+        return ""
+      end
       
       # setAttributeNodeNS introduced in DOM Level 2
       # Adds a new attribute. If an attribute with that local name and that namespace URI is already present in the element, it is replaced by the new one. Replacing an attribute node by itself has no effect.
