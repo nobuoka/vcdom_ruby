@@ -7,7 +7,7 @@ module VCDOM
       
       def initialize( doc, data )
         super( doc )
-        @data = data.intern
+        @data = data
       end
       
       def data

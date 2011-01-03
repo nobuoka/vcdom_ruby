@@ -1,0 +1,33 @@
+= VCDOM [RubyGem]
+
+This project makes a implementation of W3C DOM working on Ruby.
+Now, it's under construction...
+
+== Example
+
+following example shows you how to parse XML string and how to serialize DOM objects:
+
+  require "vcdom/xml_ls"
+  
+  @ls_impl = VCDOM::XMLLS
+  # get parser
+  parser = @ls_impl.create_ls_parser( :mode_asynchronous, nil )
+  
+  # set input xml string
+  input  = @ls_impl.create_ls_input()
+  input.string_data = "<empty-element/>"
+  # do parse
+  doc = parser.parse( input )
+  doc.document_element.tag_name
+      #=> "empty-element"
+  
+  # parse other xml string
+  input.string_data = "<test>aaaa</test>"
+  doc = parser.parse( input )
+  doc.document_element.first_child.node_value
+      #=> "aaaa"
+  
+  # serialize
+  serializer = @ls_impl.create_ls_serializer()
+  serializer.write_to_string( doc ) 
+      #=> "<test>aaa</test>"

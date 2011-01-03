@@ -68,7 +68,15 @@ module VCDOM::XMLLS
       source = input.string_data
       if source.class == String then
         # Ruby 1.8 の場合, String を 1 文字ずつに分ける
-        source = source.split //u if RUBY_VERSION < "1.9"
+        if RUBY_VERSION < "1.9"
+          source = source.split //u
+          class << source
+            def []( *args )
+              res = super( *args )
+              args.length == 2 ? res.join : res
+            end
+          end
+        end
         _parse_xml_str( source, XMLContentHandler.new( VCDOM::Document ) )
       else
         raise ArgumentTypeError.new()
@@ -318,16 +326,21 @@ module VCDOM::XMLLS
           #  break
           elsif str[i] == "&" then
             if str[i+1] != "#" then
-              if str[i+2,3] == "lt;" then
+              if str[i+1,3] == "lt;" then
                 chardata << "<"
-              elsif str[i+2,3] == "gt;" then
+                i += 4
+              elsif str[i+1,3] == "gt;" then
                 chardata << ">"
-              elsif str[i+2,5] == "quot;" then
+                i += 4
+              elsif str[i+1,5] == "quot;" then
                 chardata << "\""
-              elsif str[i+2,5] == "apos;" then
+                i += 6
+              elsif str[i+1,5] == "apos;" then
                 chardata << "'"
-              elsif str[i+2,4] == "amp;" then
+                i += 6
+              elsif str[i+1,4] == "amp;" then
                 chardata << "&"
+                i += 5
               else
                 # entity reference
                 break
