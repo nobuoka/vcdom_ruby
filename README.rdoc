@@ -5,7 +5,28 @@ Now, it's under construction...
 
 == Example
 
-following example shows you how to parse XML string and how to serialize DOM objects:
+Following example shows you how to create a new DOM Document object:
+
+  require "vcdom"
+  
+  # the Module object VCDOM can be used as a DOMImplementation object
+  @dom_impl = VCDOM
+  
+  # create a document having no namespace
+  doc = @dom_impl.create_document( nil, "test-element" )
+  
+  # check
+  doc.document_element.tag_name #=> "test-element"
+  doc.document_element.namespace_uri #=> nil
+  
+  # create a document having namespace
+  doc = @dom_impl.create_document( "http://www.vividcode.info/test_namespace", "test-element" )
+  
+  # check
+  doc.document_element.tag_name #=> "test-element"
+  doc.document_element.namespace_uri #=> "http://www.vividcode.info/test_namespace"
+
+Following example shows you how to parse XML string and how to serialize DOM objects:
 
   require "vcdom/xml_ls"
   
