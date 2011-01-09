@@ -82,8 +82,8 @@ module VCDOM
       def _append_child( new_child )
         #@child_nodes << new_child
         if not new_child.parent_node.nil? then
-          # æ‘c‚ª‘¶Ý‚·‚é
-          # new_child ‚ªŽ©•ª‚Ìæ‘c‚¶‚á‚È‚¢‚©Šm”F‚·‚é
+          # å…ˆç¥–ãŒå­˜åœ¨ã™ã‚‹
+          # new_child ãŒè‡ªåˆ†ã®å…ˆç¥–ã˜ã‚ƒãªã„ã‹ç¢ºèªã™ã‚‹
           node = self.parent_node
           while not node.nil? do
             if node.equal? new_child then
@@ -91,7 +91,7 @@ module VCDOM
             end
             node = node.parent_node
           end
-          # new_child ‚ð‚Æ‚è‚ ‚¦‚¸ƒcƒŠ[‚©‚çíœ
+          # new_child ã‚’ã¨ã‚Šã‚ãˆãšãƒ„ãƒªãƒ¼ã‹ã‚‰å‰Šé™¤
           new_child.parent_node.remove_child( new_child )
         end
         new_child._set_parent_node( self )

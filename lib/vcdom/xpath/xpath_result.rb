@@ -4,6 +4,21 @@ require "vcdom/xpath/xpath_exception"
 
 module VCDOM::XPath
   
+  # This class implements {the interface XPathResult of W3C DOM XPath}[http://www.w3.org/TR/DOM-Level-3-XPath/xpath.html#XPathResult]. 
+  # 
+  # == When you get a XPathResult object
+  # 
+  # You get a XPathResult object as return value of XPathExpression#evaluate or XPathEvaluatorMod#evaluate.
+  # 
+  #   require "vcdom"
+  #   require "vcdom/xpath"
+  #   
+  #   # doc is a Document object
+  #   expr   = doc.create_expression( "1 + 2 + 3", nil )
+  #   result = expr.evaluate( node, :number_type )
+  #   
+  #   result.number_value #=> 6.0
+  # 
   class XPathResult
     
     ANY_TYPE                       = :any_type
@@ -52,6 +67,9 @@ module VCDOM::XPath
       raise XPathException.new( XPathException::TYPE_ERR,
             "result type is not UNORDERED_NODE_ITERATOR_TYPE or ORDERED_NODE_ITERATOR_TYPE" )
     end
+    
+    ##
+    # @private
     def initialize( value ) # :nodoc:
       @value = value
     end

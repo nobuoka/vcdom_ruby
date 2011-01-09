@@ -3,18 +3,18 @@
 module VCDOM
     class Node
       
-      ELEMENT_NODE                = 1
-      ATTRIBUTE_NODE              = 2
-      TEXT_NODE                   = 3
-      CDATA_SECTION_NODE          = 4
-      ENTITY_REFERENCE_NODE       = 5
-      ENTITY_NODE                 = 6
-      PROCESSING_INSTRUCTION_NODE = 7
-      COMMENT_NODE                = 8
-      DOCUMENT_NODE               = 9
-      DOCUMENT_TYPE_NODE          = 10
-      DOCUMENT_FRAGMENT_NODE      = 11
-      NOTATION_NODE               = 12
+      ELEMENT_NODE                = :element_node
+      ATTRIBUTE_NODE              = :attribute_node
+      TEXT_NODE                   = :text_node
+      CDATA_SECTION_NODE          = :cdata_section_node
+      ENTITY_REFERENCE_NODE       = :entity_reference_node
+      ENTITY_NODE                 = :entity_node
+      PROCESSING_INSTRUCTION_NODE = :processing_instruction_node
+      COMMENT_NODE                = :comment_node
+      DOCUMENT_NODE               = :document_node
+      DOCUMENT_TYPE_NODE          = :document_type_node
+      DOCUMENT_FRAGMENT_NODE      = :document_fragment_node
+      NOTATION_NODE               = :notation_node
       
       class << self
         alias :_new :new
@@ -91,7 +91,7 @@ module VCDOM
             return lookup_namespace_prefix( namespace_uri, self )
           when DOCUMENT_NODE then
             #//////////////////////
-            # ‚±‚ê‚Å‚¢‚¢‚ÌH
+            # ã“ã‚Œã§ã„ã„ã®ï¼Ÿ
             #//////////////////////
             return self.document_element.lookup_namespace_prefix( namespace_uri, self )
           when ENTITY_NODE, NOTATION_NODE, DOCUMENT_FRAGMENT_NODE, DOCUMENT_TYPE_NODE then
@@ -99,7 +99,7 @@ module VCDOM
           when ATTRIBUTE_NODE then
             if not self.owner_element.nil? then #( Attr has an owner Element ) 
             #//////////////////////
-            # ‚±‚ê‚Å‚¢‚¢‚ÌH
+            # ã“ã‚Œã§ã„ã„ã®ï¼Ÿ
             #//////////////////////
               return self.owner_element.lookup_namespace_prefix( namespace_uri, self )
             end
@@ -115,7 +115,7 @@ module VCDOM
             if not anc_node.nil? then
             #// EntityReferences may have to be skipped to get to it 
             #//////////////////////
-            # ‚±‚ê‚Å‚¢‚¢‚ÌH
+            # ã“ã‚Œã§ã„ã„ã®ï¼Ÿ
             #//////////////////////
               return anc_node.lookup_namespace_prefix( namespace_uri, self )
             end
@@ -126,6 +126,27 @@ module VCDOM
       # Always +false+.
       def has_child_nodes()
         return false
+      end
+      
+      def compare_document_position( ref_node )
+        # TODO
+        self_preds = Array.new()
+        ref_preds  = Array.new()
+        node = self
+        while node do
+          self_preds.unshift node
+          node = node.parent_node
+        end
+        node = ref_node
+        while node do
+          ref_preds.unshift node
+          node = node.parent_node
+        end
+        i = 0
+        while self_preds[i] and self_preds[i].equal? ref_preds[i] do i += 1 end
+        if self_preds[i].nil? then
+          return 
+        end
       end
       
       def lookup_namespace_prefix( namespace_uri, original_element )
@@ -140,7 +161,7 @@ module VCDOM
         #if #( Element has attributes) { 
         #for ( all DOM Level 2 valid local namespace declaration attributes of Element ) {
           #//////////////////////////
-          # —v•ÏX
+          # è¦å¤‰æ›´
           #//////////////////////////
           if attr.prefix == "xmlns" and attr[0].data == namespace_uri and 
                 original_element.lookup_namespace_uri( attr.local_name ) == namespace_uri then
@@ -160,7 +181,7 @@ module VCDOM
             if not anc_node.nil? then
             #// EntityReferences may have to be skipped to get to it 
             #//////////////////////
-            # ‚±‚ê‚Å‚¢‚¢‚ÌH
+            # ã“ã‚Œã§ã„ã„ã®ï¼Ÿ
             #//////////////////////
               return anc_node.lookup_namespace_prefix( namespace_uri, original_element )
             end
@@ -188,7 +209,7 @@ module VCDOM
                 #if (Attr's prefix == "xmlns" and Attr's localName == prefix ) 
                 #         // non default namespace
                 # /////////////////////
-                #  •ÏX‚ª•K—v
+                #  å¤‰æ›´ãŒå¿…è¦
                 # /////////////////////
                 if not attr[0].nil? then
                   #if (Attr's value is not empty) {
@@ -199,7 +220,7 @@ module VCDOM
                 #(Attr's localname == "xmlns" and prefix == null)
                 #       // default namespace { 
                 # /////////////////////
-                #  •ÏX‚ª•K—v
+                #  å¤‰æ›´ãŒå¿…è¦
                 # /////////////////////
                 if not attr[0].nil? then
                   # if (Attr's value is not empty) {
@@ -259,7 +280,7 @@ module VCDOM
               #Attr's localName == "xmlns" ) {
               if attr.local_name == "xmlns" then
                 #/////////////////////////////////
-                # •ÏX•K—v
+                # å¤‰æ›´å¿…è¦
                 #/////////////////////////////////
                 return attr[0] == namespace_uri
               end

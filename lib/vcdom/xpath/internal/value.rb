@@ -1,7 +1,9 @@
 # coding : utf-8
 
+# @private
 module VCDOM::XPath::Internal # :nodoc:
   
+  # @private
   class AbstractValue # :nodoc:
     
     def is_value?;   true  end
@@ -67,6 +69,7 @@ module VCDOM::XPath::Internal # :nodoc:
     
   end
   
+  # @private
   class NumberValue < AbstractValue # :nodoc:
     
     def initialize( val )
@@ -135,6 +138,7 @@ module VCDOM::XPath::Internal # :nodoc:
     
   end
   
+  # @private
   class StringValue < AbstractValue # :nodoc:
     
     def initialize( val )
@@ -169,6 +173,7 @@ module VCDOM::XPath::Internal # :nodoc:
     
   end
   
+  # @private
   class BooleanValue < AbstractValue # :nodoc:
     
     def initialize( val )
@@ -200,19 +205,20 @@ module VCDOM::XPath::Internal # :nodoc:
     
   end
   
+  # @private
   class NodeSetValue < AbstractValue # :nodoc:
     
     def initialize( *nodes )
       @value = nodes
     end
+    
     def to_string_value()
-      # TODO
-      raise "NOT SUPPORT"
+      self.sort()
+      @value.empty? ? StringValue.new("") : StringValue.new( @value[0].text_content )
     end
     
     def to_number_value()
-      # TODO
-      raise "NOT SUPPORT"
+      self.to_string_value().to_number_value()
     end
     
     def to_boolean_value()
@@ -228,12 +234,15 @@ module VCDOM::XPath::Internal # :nodoc:
     
     def sort( document_order = true )
       # TODO
-      #@value.sort! { |a,b| 
-      #  
-      #  case a. b
-      #  when :document_position_preceding, 
-      #  when :document_position_following, # a が b より後ろ
-      #}
+      return
+      @value.sort! do |a,b|
+        case a.compare_document_position(b)
+        when :document_position_preceding, :document_position_contains then # a が b よりも前
+        when :document_position_following, :document_position_contained_by then # a が b より後ろ
+        else
+          raise "node-set contains nodes which contained by each other trees"
+        end
+      end
     end
     
     def each

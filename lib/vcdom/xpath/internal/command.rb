@@ -1,7 +1,9 @@
 # coding : utf-8
 
+# @private
 module VCDOM::XPath::Internal # :nodoc:
   
+  # @private
   class AbstractCommand # :nodoc:
     def is_value?;   false end
     def is_expr?;    false end
@@ -13,6 +15,7 @@ module VCDOM::XPath::Internal # :nodoc:
     
   end
   
+  # @private
   class AbstractOperationCommand < AbstractCommand # :nodoc:
     def initialize( operation_name )
       @operation_name = operation_name
@@ -24,10 +27,12 @@ module VCDOM::XPath::Internal # :nodoc:
     end
   end
   
+  # @private
   class OperationUnaryCommand < AbstractOperationCommand # :nodoc:
     def command_type; :operation_unary end
   end
   
+  # @private
   class OperationBinaryCommand < AbstractOperationCommand # :nodoc:
     def command_type; :operation_binary end
   end
@@ -47,6 +52,7 @@ module VCDOM::XPath::Internal # :nodoc:
     :">="  => OperationBinaryCommand.new( :">=" ),
     :"|"   => OperationBinaryCommand.new( :"|" ),
   }
+  # @private
   def self.get_operation_command( name )
     if @operation_unary_commands.include? name
       return @operation_unary_commands[name]
@@ -55,6 +61,7 @@ module VCDOM::XPath::Internal # :nodoc:
     end
   end
   
+  # @private
   class ContextNodeCommand < AbstractCommand # :nodoc:
     def initialize(); end
     def command_type; :context_node end
@@ -64,6 +71,7 @@ module VCDOM::XPath::Internal # :nodoc:
     end
   end
   
+  # @private
   class RootNodeCommand < AbstractCommand # :nodoc:
     def initialize(); end
     def command_type; :root_node end
@@ -73,6 +81,7 @@ module VCDOM::XPath::Internal # :nodoc:
     end
   end
   
+  # @private
   class NodeSelectionCommand < AbstractCommand # :nodoc:
     def initialize( axis, node_type, node_ns_uri, node_name, pred_exprs )
       @axis = axis
@@ -89,6 +98,7 @@ module VCDOM::XPath::Internal # :nodoc:
     attr_reader :pred_exprs
   end
   
+  # @private
   class ExprEvalCommand < AbstractCommand # :nodoc:
     def initialize( expr )
       @expr = expr
@@ -97,11 +107,12 @@ module VCDOM::XPath::Internal # :nodoc:
     def command_type; :expr_eval end
   end
   
+  # @private
   class FunctionCallCommand < AbstractCommand # :nodoc:
     EMPTY_ARGS = Array.new().freeze()
     def initialize( name, arg_exprs )
       @function_name = name
-      @function_args = arg_exprs # nil ‚Ü‚½‚Í
+      @function_args = arg_exprs # nil ï¿½Ü‚ï¿½ï¿½ï¿½
     end
     attr_reader :function_name
     def function_args
@@ -110,6 +121,7 @@ module VCDOM::XPath::Internal # :nodoc:
     def command_type; :function_call end
   end
   
+  # @private
   class PredsEvalCommand < AbstractCommand # :nodoc:
     def initialize( exprs )
       @exprs = exprs

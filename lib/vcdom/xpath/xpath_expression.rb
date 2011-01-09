@@ -20,17 +20,20 @@ module VCDOM::XPath
     require "vcdom/xpath/xpath_result"
     require "vcdom/xpath/internal/evaluator"
     
+    ##
+    # @private
     def initialize( expr ) # :nodoc:
       @expr = expr
     end
     
     # Evaluates the XPath expression.
+    # @return [XPathResult] a result of evaluating the XPath expression. 
     # 
     # Usage:
-    # 
     #   # expr is a XPathExpression object, and elem is an Element object.
     #   result   = expr.evaluate( elem, :first_ordered_node_type )
     #   res_node = result.single_node_value
+    # 
     def evaluate( context_node, type, result = nil )
       res = Internal::Evaluator.new( context_node ).evaluate_expr( @expr )
       case type
