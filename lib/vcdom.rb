@@ -1,6 +1,7 @@
 # coding : utf-8
 
 require 'vcdom/document'
+require 'vcdom/document_type'
 
 # This Module object can be used as {the DOMImplementation object of W3C DOM Core}
 # [http://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-102161490].
@@ -13,6 +14,10 @@ module VCDOM
   #                                          in DOMString publicId, 
   #                                          in DOMString systemId)
   #                                          raises(DOMException);
+  def self.create_document_type( qname, public_id, system_id )
+    doctype = DocumentType._new( qname, public_id, system_id )
+    return doctype
+  end
   
   # Creates a DOM Document object with its document element.
   # Now, the vcdom library doesn't support a XML Doctype, so the third argument +doctype+ has no effect.

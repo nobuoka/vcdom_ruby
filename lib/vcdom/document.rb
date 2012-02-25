@@ -26,6 +26,14 @@ module VCDOM
         @document_element
       end
       
+      def doctype
+        @doctype
+      end
+      
+      def implementation
+        VCDOM
+      end
+      
       # always +nil+
       def text_content
         nil
@@ -50,7 +58,12 @@ module VCDOM
               raise "HIERARCHY_REQUEST_ERR"
             end
           when DOCUMENT_TYPE_NODE then
-            # is there document_type already?
+            # TODO: is there document_type already?
+            if @doctype.nil?
+              @doctype = new_child
+            else
+              # どうする?
+            end
           when PROCESSING_INSTRUCTION_NODE, COMMENT_NODE then
             # OK
           else
